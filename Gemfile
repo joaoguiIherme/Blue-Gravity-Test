@@ -17,6 +17,7 @@ gem 'grape'
 gem 'grape-swagger'
 gem 'grape-swagger-rails'
 gem 'jwt'
+gem "bcrypt"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
