@@ -4,10 +4,18 @@ class ContentsApi < Grape::API
   resource :contents do
     desc 'Return list of contents with ratings'
     get do
-      Content.includes(:ratings).map do |content|
-        ratings = content.ratings.pluck(:rating)
-        { content: content, ratings: ratings }
+      contents = Content.includes(:ratings).map do |content|
+        {
+          id: content.id,
+          title: content.title,
+          description: content.description,
+          category: content.category,
+          thumbnail_url: content.thumbnail_url,
+          content_url: content.content_url,
+          ratings: content.ratings.pluck(:rating)
+        }
       end
+      { contents: contents }
     end
 
     desc 'Create content'
@@ -19,13 +27,14 @@ class ContentsApi < Grape::API
       requires :content_url, type: String
     end
     post do
-      Content.create!({
+      content = Content.create!({
         title: params[:title],
         description: params[:description],
         category: params[:category],
         thumbnail_url: params[:thumbnail_url],
         content_url: params[:content_url]
       })
+      { message: 'Content created successfully', content: content }
     end
 
     desc 'Update content'
@@ -39,13 +48,8 @@ class ContentsApi < Grape::API
     end
     put ':id' do
       content = Content.find(params[:id])
-      if content
-        content.update(params.slice(:title, :description, :category, :thumbnail_url, :content_url).compact)
-        { message: 'Content updated successfully', content: content }
-      else
-        error!({ error: 'Content not found' }, 404)
-      end
-      
+      content.update!(params.slice(:title, :description, :category, :thumbnail_url, :content_url).compact)
+      { message: 'Content updated successfully', content: content }
     end
 
     desc 'Delete content'
@@ -53,13 +57,17 @@ class ContentsApi < Grape::API
       requires :id, type: Integer
     end
     delete ':id' do
-      content = Content.find_by(id: params[:id])
-      if content
-        content.destroy
-        { message: 'Content deleted successfully' }
-      else
-        error!({ error: 'Content not found' }, 404)
-      end
+      content = Content.find(params[:id])
+      content.destroy
+      { message: 'Content deleted successfully' }
     end
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    error!({ error: e.message }, 404)
+  end
+
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    error!({ error: e.message }, 422)
   end
 end
