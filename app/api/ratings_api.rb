@@ -19,7 +19,7 @@ class RatingsApi < Grape::API
     rescue ActiveRecord::RecordNotFound => e
       error!({ error: 'Content not found' }, 404)
     rescue ActiveRecord::RecordInvalid => e
-      error!({ error: e.message }, 422)
+      error!({ error: e.message }, 500)
     end
   end
 end
