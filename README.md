@@ -33,7 +33,8 @@ Also availabe an guide at [Postman](https://documenter.getpostman.com/view/37120
 
 1. To start the application, run:
     ```sh
-   docker-compose up
+    docker-compose build
+    docker-compose up
     ```
 
 2. The application will be available at http://localhost:3000.
