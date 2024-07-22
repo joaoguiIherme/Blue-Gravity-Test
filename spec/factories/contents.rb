@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :content do
-    title { "MyString" }
-    description { "MyText" }
-    category { "MyString" }
-    thumbnail_url { "MyString" }
-    content_url { "MyString" }
+    title { Faker::Lorem.sentence }
+    description { Faker::Lorem.paragraph }
+    category { %w[game video artwork music].sample }
+    thumbnail_url { Faker::Internet.url }
+    content_url { Faker::Internet.url }
   end
 end
