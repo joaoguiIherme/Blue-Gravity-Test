@@ -1,7 +1,7 @@
 # Rails 7 API with Grape Swagger
 
 This is an API built with Rails 7 using Grape Swagger, featuring endpoints for users, contents, and ratings. The API uses Docker and PostgreSQL.
-Also availabe an guide at [Postman](#https://documenter.getpostman.com/view/37120749/2sA3kUJ3HQ)
+Also availabe an guide at [Postman](https://documenter.getpostman.com/view/37120749/2sA3kUJ3HQ) and [Pitch](https://pitch.com/v/content-management-api-jat5zt)
 ## Table of Contents
 
 - [Installation](#installation)
