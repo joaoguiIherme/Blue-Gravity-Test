@@ -20,10 +20,10 @@ class UsersApi < Grape::API
     post 'login' do
       user = User.find_by(email: params[:email])
       if user&.authenticate(params[:password])
-        token = JWT.encode({ user_id: user.id }, 'your_secret_key', 'HS256')
+        token = JWT.encode({ user_id: user.id }, 'secret_key', 'HS256')
         { token: token }
       else
-        error!('Unauthorized', 401)
+        error!('Unauthorized! Invalid email or password', 401)
       end
     end
   end

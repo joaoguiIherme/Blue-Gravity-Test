@@ -1,4 +1,6 @@
 class RatingsApi < Grape::API
+  include AuthMiddleware
+
   resource :ratings do
     desc 'Create a rating'
     params do
@@ -6,9 +8,7 @@ class RatingsApi < Grape::API
       requires :rating, type: Integer
     end
     post do
-      user = User.find_by(email: headers['X-User-Email'])
-      error!('Unauthorized', 401) unless user
-
+      user = @current_user
       content = Content.find(params[:content_id])
       Rating.create!({
         user: user,
